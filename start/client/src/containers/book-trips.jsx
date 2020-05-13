@@ -22,7 +22,7 @@ export const BOOK_TRIPS = gql`
 const BookTrips = (props) => {
   const [id, setId] = useState("");
 
-  const [bookTrips, { data }] = useMutation(BOOK_TRIPS, {
+  const [bookTrips, { loading }] = useMutation(BOOK_TRIPS, {
     variables: { launchIds: props.cartItems, payMethodId: id },
     refetchQueries: props.cartItems.map((launchId) => ({
       query: GET_LAUNCH,
@@ -37,7 +37,9 @@ const BookTrips = (props) => {
     },
   });
 
-  return (
+  return loading ? (
+    <Button disabled={true}>Loading...</Button>
+  ) : (
     <Button
       disabled={!props.stripe}
       onClick={(e) =>
